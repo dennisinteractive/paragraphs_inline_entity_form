@@ -45,7 +45,7 @@ class ParagraphEntityForm extends EntityForm {
 
   /**
    * {@inheritdoc}
-   * 
+   *
    * @todo fix the edit form
    */
   public function getForm(array &$original_form, FormStateInterface $form_state, array $additional_widget_parameters) {
@@ -53,14 +53,22 @@ class ParagraphEntityForm extends EntityForm {
       return ['#markup' => $this->t('The settings for %label widget are not configured correctly.', ['%label' => $this->label()])];
     }
 
-    // Check if we need to show the content type selector form or the entity create form
-    if (!empty($form_state->getUserInput()['selected_bundle'])) {
-      $this->configuration['bundle'] = $form_state->getUserInput()['selected_bundle'];
+    // If there is an existing entity then we are editing.
+    // Set the necessary values for the paragraph update form.
+    $entity = NULL;
+    if ($entity_browser = $form_state->get('entity_browser')) {
+      /** @var \Drupal\Core\Entity\EntityInterface $entity */
+      if ($id = $entity_browser['widget_context']['current_ids']) {
+        $entity = $this->entityTypeManager->getStorage('paragraph')->load($id);
+        $this->configuration['bundle'] = $entity->bundle();
+        $this->configuration['entity_type'] = $entity->getEntityTypeId();
+      }
     }
 
-    if ($this->configuration['bundle'] == '0') {
-      $form = $this->entitySelectorForm($original_form, $form_state, $additional_widget_parameters);
-      return $form;
+    // Set the selected bundle if this is a new paragraph and we're going to
+    // the second part of the form.
+    if (!empty($form_state->getUserInput()['selected_bundle'])) {
+      $this->configuration['bundle'] = $form_state->getUserInput()['selected_bundle'];
     }
 
     if ($form_state->has(['entity_browser', 'widget_context'])) {
@@ -68,6 +76,12 @@ class ParagraphEntityForm extends EntityForm {
     }
 
     $form = parent::getForm($original_form, $form_state, $additional_widget_parameters);
+
+    // Check if we need to show the content type selector form or the entity create form
+    if ($this->configuration['bundle'] === '0') {
+      $form = $this->entitySelectorForm($original_form, $form_state, $additional_widget_parameters);
+      return $form;
+    }
 
     $form['#submit'] = [
       ['Drupal\inline_entity_form\ElementSubmit', 'trigger']
@@ -91,6 +105,7 @@ class ParagraphEntityForm extends EntityForm {
       '#entity_type' => $this->configuration['entity_type'],
       '#bundle' => $this->configuration['bundle'],
       '#form_mode' => $this->configuration['form_mode'],
+      '#default_value' => isset($entity) ? $entity : NULL,
     ];
 
     return $form;
