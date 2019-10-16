@@ -45,13 +45,15 @@ class ParagraphEntityForm extends EntityForm {
 
   /**
    * {@inheritdoc}
-   *
-   * @todo fix the edit form
    */
   public function getForm(array &$original_form, FormStateInterface $form_state, array $additional_widget_parameters) {
     if (empty($this->configuration['entity_type']) || empty($this->configuration['form_mode'])) {
       return ['#markup' => $this->t('The settings for %label widget are not configured correctly.', ['%label' => $this->label()])];
     }
+    // Establish whether we're in the submit step.
+    // Either we're editing or we're in step two for a new embed.
+    $submit_step = !empty($form_state->getValues()) ? 1 : NULL;
+
 
     // If there is an existing entity then we are editing.
     // Set the necessary values for the paragraph update form.
@@ -62,6 +64,7 @@ class ParagraphEntityForm extends EntityForm {
         $entity = $this->entityTypeManager->getStorage('paragraph')->load($id);
         $this->configuration['bundle'] = $entity->bundle();
         $this->configuration['entity_type'] = $entity->getEntityTypeId();
+        $submit_step = 1;
       }
     }
 
@@ -77,7 +80,7 @@ class ParagraphEntityForm extends EntityForm {
 
     $form = parent::getForm($original_form, $form_state, $additional_widget_parameters);
 
-    // Check if we need to show the content type selector form or the entity create form
+    // Check if we need to show the content type selector form or the entity create form.
     if ($this->configuration['bundle'] === '0') {
       $form = $this->entitySelectorForm($original_form, $form_state, $additional_widget_parameters);
       return $form;
@@ -91,7 +94,7 @@ class ParagraphEntityForm extends EntityForm {
       'submit' => [
         '#type' => 'submit',
         '#value' => $this->configuration['submit_text'],
-        '#eb_widget_main_submit' => (empty($form_state->getValues())) ? FALSE : TRUE,
+        '#eb_widget_main_submit' => (empty($submit_step)) ? FALSE : TRUE,
         '#attributes' => ['class' => ['is-entity-browser-submit']],
         '#button_type' => 'primary',
       ],
