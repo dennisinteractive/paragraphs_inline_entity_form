@@ -59,12 +59,14 @@ class ParagraphEntityForm extends EntityForm {
     // Set the necessary values for the paragraph update form.
     $entity = NULL;
     if ($entity_browser = $form_state->get('entity_browser')) {
-      /** @var \Drupal\Core\Entity\EntityInterface $entity */
-      if ($id = $entity_browser['widget_context']['current_ids']) {
-        $entity = $this->entityTypeManager->getStorage('paragraph')->load($id);
-        $this->configuration['bundle'] = $entity->bundle();
-        $this->configuration['entity_type'] = $entity->getEntityTypeId();
-        $submit_step = 1;
+      if (isset($entity_browser['widget_context']['current_ids'])) {
+        if ($id = $entity_browser['widget_context']['current_ids']) {
+          /** @var \Drupal\Core\Entity\EntityInterface $entity */
+          $entity = $this->entityTypeManager->getStorage('paragraph')->load($id);
+          $this->configuration['bundle'] = $entity->bundle();
+          $this->configuration['entity_type'] = $entity->getEntityTypeId();
+          $submit_step = 1;
+        }
       }
     }
 
