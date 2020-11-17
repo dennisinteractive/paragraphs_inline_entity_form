@@ -1,4 +1,7 @@
 <?php
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\entity_embed\Form\EntityEmbedDialog;
 /**
  * @file Module.
  */
@@ -8,14 +11,14 @@ use Drupal\core\Url;
 /**
  * Implements hook_form_alter().
  */
-function paragraphs_inline_entity_form_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function paragraphs_inline_entity_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   /* @var Drupal\Core\Entity\FieldableEntityInterface $entity */
   $formObject = $form_state->getFormObject();
-  if ($formObject instanceof \Drupal\Core\Entity\EntityFormInterface) {
+  if ($formObject instanceof EntityFormInterface) {
     $form['#attached']['library'][] = 'paragraphs_inline_entity_form/dialog';
   }
 
-  if ($formObject instanceof \Drupal\entity_embed\Form\EntityEmbedDialog) {
+  if ($formObject instanceof EntityEmbedDialog) {
     if (paragraphs_inline_entity_form_entity_browser_is_paragraph_item($form)) {
       $form['#attached']['library'][] = 'paragraphs_inline_entity_form/dialog';
       switch ($form_state->get('step')) {

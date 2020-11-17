@@ -2,17 +2,14 @@
 
 namespace Drupal\paragraphs_inline_entity_form\Tests;
 
-use Drupal\simpletest\WebTestBase;
-use Drupal\node\Entity\Node;
-use Drupal\node\Entity\NodeType;
-use Drupal\Component\Serialization\Json;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Paragraphs IEF tests.
  *
  * @group paragraphs_inline_entity_form
  */
-class ParagraphsIEFTests extends WebTestBase {
+class ParagraphsIEFTests extends BrowserTestBase {
 
   /**
    * Modules to enable.
