@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\paragraphs_inline_entity_form\Tests;
+namespace Drupal\Tests\paragraphs_inline_entity_form\Functional;
 
 use Drupal\Tests\BrowserTestBase;
 
@@ -10,6 +10,11 @@ use Drupal\Tests\BrowserTestBase;
  * @group paragraphs_inline_entity_form
  */
 class ParagraphsIEFTests extends BrowserTestBase {
+
+  /**
+   * @inheritdoc
+   */
+  protected $profile = 'standard';
 
   /**
    * Modules to enable.
@@ -28,7 +33,7 @@ class ParagraphsIEFTests extends BrowserTestBase {
   ];
 
   /**
-   * @var \Drupal\user\UserInterface
+   * Admin user.
    */
   protected $adminUser;
 
@@ -39,16 +44,13 @@ class ParagraphsIEFTests extends BrowserTestBase {
     parent::setUp();
 
     // Create admin user.
-    $this->adminUser = $this->drupalCreateUser([
-      'access administration pages',
-    ], 'Admin', TRUE);
+    $this->adminUser = $this->drupalCreateUser(['administer site configuration']);
   }
 
   /**
    * Admin UI.
    */
-  function testAdminUI() {
+  public function testAdminUI() {
     $this->drupalLogin($this->adminUser);
-
   }
 }
