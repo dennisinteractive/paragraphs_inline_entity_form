@@ -6,7 +6,7 @@ use Drupal\entity_embed\Form\EntityEmbedDialog;
  * @file Module.
  */
 
-use Drupal\core\Url;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_form_alter().
@@ -35,7 +35,7 @@ function paragraphs_inline_entity_form_form_alter(&$form, FormStateInterface $fo
 
           $form['actions']['back'] = [
             '#type' => 'submit',
-            '#value' => t('Back'),
+            '#value' => t('Edit'),
             '#submit' => [],
             '#ajax' => [
               'url' => Url::fromRoute('entity_browser.edit_form', [

@@ -12,16 +12,12 @@ use Drupal\Tests\BrowserTestBase;
 class ParagraphsIEFTests extends BrowserTestBase {
 
   /**
-   * @inheritdoc
-   */
-  protected $profile = 'standard';
-
-  /**
    * Modules to enable.
    *
    * @var array
    */
   public static $modules = [
+    'node',
     'ckeditor',
     'entity',
     'entity_browser',
@@ -29,18 +25,21 @@ class ParagraphsIEFTests extends BrowserTestBase {
     'entity_reference',
     'paragraphs',
     'inline_entity_form',
+    'paragraphs_inline_entity_form',
     'paragraphs_inline_entity_form_example'
   ];
 
   /**
    * Admin user.
+   *
+   * @var \Drupal\user\Entity\User
    */
   protected $adminUser;
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp() {
     parent::setUp();
 
     // Create admin user.
