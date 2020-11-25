@@ -36,7 +36,7 @@ function paragraphs_inline_entity_form_form_alter(&$form, FormStateInterface $fo
 
           $form['actions']['back'] = [
             '#type' => 'submit',
-            '#value' => t('Edit'),
+            '#value' => t('Edit paragraph'),
             '#submit' => [],
             '#attributes' => [
               'onclick' => [
