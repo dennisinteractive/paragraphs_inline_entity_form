@@ -23,6 +23,7 @@ function paragraphs_inline_entity_form_form_alter(&$form, FormStateInterface $fo
       $form['#attached']['library'][] = 'paragraphs_inline_entity_form/dialog';
       switch ($form_state->get('step')) {
         case 'select':
+            // do nothing.
           break;
 
         case 'embed':
@@ -37,6 +38,11 @@ function paragraphs_inline_entity_form_form_alter(&$form, FormStateInterface $fo
             '#type' => 'submit',
             '#value' => t('Edit'),
             '#submit' => [],
+            '#attributes' => [
+              'onclick' => [
+                'window.ckeditorSaveCallback=Drupal.ckeditor.saveCallback'
+              ],
+            ],
             '#ajax' => [
               'url' => Url::fromRoute('entity_browser.edit_form', [
                 'entity_type' => 'paragraph',
@@ -45,12 +51,6 @@ function paragraphs_inline_entity_form_form_alter(&$form, FormStateInterface $fo
               'event' => 'click',
             ],
           ];
-          //@todo update widget
-//          $details_id = $request->query->get('details_id');
-//          if (!empty($details_id)) {
-//            $response->addCommand(new ValueUpdatedCommand($details_id));
-//          }
-//          return $response;
           break;
       }
     }
