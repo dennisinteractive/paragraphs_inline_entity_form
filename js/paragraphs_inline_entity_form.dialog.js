@@ -16,6 +16,7 @@
   $(window).on('editor:dialogsave', function (e, values) {
     if (typeof window.ckeditorSaveCallback == 'function') {
       Drupal.ckeditor.saveCallback = window.ckeditorSaveCallback;
+      values.attributes['rnd'] = Math.random();
       Drupal.ckeditor.saveCallback(values);
     }
   });
