@@ -18,6 +18,7 @@
       Drupal.ckeditor.saveCallback = window.ckeditorSaveCallback;
       values.attributes['rnd'] = Math.random();
       Drupal.ckeditor.saveCallback(values);
+      delete window.ckeditorSaveCallback;
     }
   });
 
