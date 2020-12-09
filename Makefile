@@ -9,6 +9,7 @@ export $(shell sed 's/=.*//' .env)
 build-local-8:
 	docker run --rm --name drupalci_${PROJECT_NAME} \
 	    -v ${PWD}/:/var/www/html/web/modules/contrib/${PROJECT_NAME} \
+	    -v ~/artifacts:/artifacts \
 	    -p ${PROJECT_PORT}:80 \
 	    -d marcelovani/drupalci:8-apache-interactive
 	make build-local
@@ -17,6 +18,7 @@ build-local-8:
 build-local-9:
 	docker run --rm --name drupalci_${PROJECT_NAME} \
 	    -v ${PWD}/:/var/www/html/web/modules/contrib/${PROJECT_NAME} \
+	    -v ~/artifacts:/artifacts \
 	    -p ${PROJECT_PORT}:80 \
 	    -d marcelovani/drupalci:9-apache-interactive
 	make build-local
@@ -43,6 +45,7 @@ test-local:
 # Test in non-interactive mode
 test-8:
 	docker run --name drupalci_${PROJECT_NAME} \
+	    -v ~/artifacts:/artifacts \
 	    --rm marcelovani/drupalci:8-apache \
 	    --project ${PROJECT_NAME} \
 	    --version dev-1.x \
@@ -51,7 +54,8 @@ test-8:
 # Test in non-interactive mode
 test-9:
 	docker run --name drupalci_${PROJECT_NAME} \
-	    --rm marcelovani/drupalci:8-apache \
+	    -v ~/artifacts:/artifacts \
+	    --rm marcelovani/drupalci:9-apache \
 	    --project ${PROJECT_NAME} \
 	    --version dev-1.x \
 	    --dependencies ${DEPENDENCIES}
